@@ -1,12 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(BallMotor))]
 public class Player : MonoBehaviour
 {
     [SerializeField] int _maxHealth = 3;
     int _currenthealth;
+
+    [SerializeField] int _treasureCount = 0;
+    public Text _treasure;
+
+    [SerializeField] ParticleSystem _deathParticles;
+    [SerializeField] AudioClip _deathSound;
+
 
     BallMotor _ballMotor;
 
@@ -38,7 +46,7 @@ public class Player : MonoBehaviour
 
     public void IncreaseHealth(int amount)
     {
-        _currenthealth = Mathf.Clamp(_currenthealth, 0, _maxHealth);
+        _currenthealth += amount;
         Debug.Log("Player's health: " + _currenthealth);
     }
 
@@ -51,6 +59,18 @@ public class Player : MonoBehaviour
         {
             Kill();
         }
+    }
+
+    public void IncreaseTreasure(int amount)
+    {
+        _treasureCount += amount;
+        Debug.Log("Treasures found: " + _treasureCount);
+        SetCountText();
+    }
+
+    void SetCountText()
+    {
+        _treasure.text = "Treasures Found:" + _treasureCount.ToString();
     }
 
     public void Kill()
